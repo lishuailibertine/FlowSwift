@@ -57,7 +57,7 @@ public struct FlowGRPCRequest{
             do {
                 try eventLoop.syncShutdownGracefully()
             } catch let error {
-                print("queryAccount error: \(error)")
+                print("queryLatestBlock error: \(error)")
             }
         }
         let getLastBlock = Flow_Access_GetLatestBlockRequest.with {
@@ -73,7 +73,7 @@ public struct FlowGRPCRequest{
             do {
                 try eventLoop.syncShutdownGracefully()
             } catch let error {
-                print("queryAccount error: \(error)")
+                print("sendTransaction error: \(error)")
             }
         }
         let sendTransactionRequest = Flow_Access_SendTransactionRequest.with {
@@ -89,7 +89,7 @@ public struct FlowGRPCRequest{
             do {
                 try eventLoop.syncShutdownGracefully()
             } catch let error {
-                print("queryAccount error: \(error)")
+                print("queryTransactionResult error: \(error)")
             }
         }
         let getTransactionResult = Flow_Access_GetTransactionRequest.with{
@@ -104,7 +104,7 @@ public struct FlowGRPCRequest{
             do {
                 try eventLoop.syncShutdownGracefully()
             } catch let error {
-                print("queryAccount error: \(error)")
+                print("executeScript error: \(error)")
             }
         }
         let executeScriptRequest = Flow_Access_ExecuteScriptAtLatestBlockRequest.with{
