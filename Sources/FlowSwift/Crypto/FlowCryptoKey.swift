@@ -65,7 +65,6 @@ public struct FlowSecp256k1Keypair: FlowKeypairInterface {
     public func signAlgorithm() -> FlowSigningAlgorithm {
         return .ECDSASecp256k1
     }
-    
 }
 
 public struct FlowECDSAP256Keypair: FlowKeypairInterface {
