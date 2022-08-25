@@ -22,6 +22,13 @@ public class FlowAddress {
     private static let maxIndex: Int = (1 << linearCodeK) - 1
     private static let AddressLength: Int = (linearCodeN + 7) >> 3
     
+    public let address: String
+    public init?(address: String) {
+        guard FlowAddress.checkIntoAddress(address: address) else {
+            return nil
+        }
+        self.address = address
+    }
     static var parityCheckMatrixColumns: [UInt32] = [
         0x00001, 0x00002, 0x00004, 0x00008,
         0x00010, 0x00020, 0x00040, 0x00080,
@@ -54,8 +61,19 @@ public class FlowAddress {
         0x8cf73ba23fe64091, 0x467b9dd11ff115c7, 0x233dcee88ffdb735, 0x919ee77447fe2309,
         0xc8cf73ba23fdc736
     ]
-    public static func validateChainAddress(chainCodeWord: UInt64, address: UInt64) -> Bool {
-        var codeWord = address ^ chainCodeWord
+    
+    public static func checkIntoAddress(chainCodeWord: FlowChainId = .codeword_mainnet, address: String) -> Bool {
+        let _address = address.hasPrefix("0x") ? address[3...] : address
+        let addressData = Data(hex: _address)
+        if addressData.count == AddressLength {
+            let address_int64: UInt64 = getUInt64(bytes: addressData.bytes, startIndex: 0)
+            return validateChainAddress(chainCodeWord: chainCodeWord, address: address_int64)
+        }
+        return false
+    }
+    
+    public static func validateChainAddress(chainCodeWord: FlowChainId, address: UInt64) -> Bool {
+        var codeWord = address ^ chainCodeWord.rawValue
         if (codeWord == 0) {
             return false
         }
@@ -68,7 +86,7 @@ public class FlowAddress {
         }
         return parity == 0
     }
-    public static func generateAddress() -> String {
+    public static func generateAddress(chainCodeWord: FlowChainId = .codeword_mainnet) -> String {
         var index  = UInt64.random(in: 0...UInt64.max)
         var address: UInt64 = 0
         for i in 0..<linearCodeK {
@@ -79,35 +97,8 @@ public class FlowAddress {
             index = index >> 1
         }
         let addressData = NSMutableData()
+        address = address ^ chainCodeWord.rawValue
         putUInt64(address, to: addressData)
         return Data(bytes: addressData.mutableBytes, count: addressData.length).toHexString()
-    }
-}
-extension FlowAddress{
-    static func getUInt32(bytes: [UInt8], startIndex: Int) -> UInt32 {
-        let subBytes = bytes[startIndex..<startIndex+4]
-        let data = Data(bytes: subBytes)
-        return UInt32(bigEndian: data.withUnsafeBytes { $0.pointee })
-    }
-    
-    static func getUInt64(bytes: [UInt8], startIndex: Int) -> UInt64 {
-        let subBytes = bytes[startIndex..<startIndex+8]
-        let data = Data(bytes: subBytes)
-        return UInt64(bigEndian: data.withUnsafeBytes { $0.pointee })
-    }
-    
-    static func putUInt8(_ val: UInt8, to data: NSMutableData) {
-        var value = val
-        data.append(&value, length: 1)
-    }
-    
-    static func putUInt32(_ val: UInt32, to data: NSMutableData) {
-        var valBE = val.bigEndian
-        data.append(&valBE, length: 4)
-    }
-    
-    static func putUInt64(_ val: UInt64, to data: NSMutableData) {
-        var valBE = val.bigEndian
-        data.append(&valBE, length: 8)
     }
 }
