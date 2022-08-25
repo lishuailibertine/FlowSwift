@@ -72,7 +72,7 @@ public class FlowAddress {
         return false
     }
     
-    public static func validateChainAddress(chainCodeWord: FlowChainId, address: UInt64) -> Bool {
+    public static func validateChainAddress(chainCodeWord: FlowChainId = .codeword_mainnet, address: UInt64) -> Bool {
         var codeWord = address ^ chainCodeWord.rawValue
         if (codeWord == 0) {
             return false

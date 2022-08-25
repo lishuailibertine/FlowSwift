@@ -29,7 +29,8 @@ let package = Package(
             dependencies: []),
         .target(
             name: "FlowSwift",
-            dependencies: [.product(name: "SwiftProtobuf", package: "swift-protobuf"), .product(name: "GRPC", package: "grpc-swift"), "CryptoSwift", "Secp256k1Swift", "SECP256r1"]),
+            dependencies: [.product(name: "SwiftProtobuf", package: "swift-protobuf"), .product(name: "GRPC", package: "grpc-swift"), "CryptoSwift", "Secp256k1Swift", "SECP256r1"],
+            resources: [.process("Templates/Contracts")]),
         .testTarget(
             name: "FlowSwiftTests",
             dependencies: ["FlowSwift"]),
