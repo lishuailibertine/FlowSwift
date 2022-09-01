@@ -10,7 +10,7 @@ import CryptoSwift
 
 //https://github.com/onflow/rosetta/blob/905dd965002b4fbe35d26031ba28f2f3fbedc30c/cmd/genaddress/genaddress.go
 
-public class FlowAddress {
+public struct FlowAddress: Codable {
     public typealias FlowAddressState = UInt64
     public static let zeroAddressState: FlowAddressState = 0
     public static let serviceAddressState: FlowAddressState = 1

@@ -11,8 +11,13 @@ import XCTest
 class FlowContractsTests: XCTestCase {
 
     func test_loadContracts() throws {
-        
+
         let settingsURL = Bundle.module.url(forResource: "AddAccountContractTemplate", withExtension: "txt")
+        
+        let fileContent =  try String(contentsOf: settingsURL!, encoding: .utf8)
+        
         debugPrint(settingsURL)
+        
+        
     }
 }
