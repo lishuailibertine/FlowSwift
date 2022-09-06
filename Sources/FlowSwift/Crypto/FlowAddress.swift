@@ -29,6 +29,9 @@ public struct FlowAddress: Codable {
         }
         self.address = address
     }
+    public var addressData: Data {
+        return Data(hex: self.address.stripHexPrefix())
+    }
     static var parityCheckMatrixColumns: [UInt32] = [
         0x00001, 0x00002, 0x00004, 0x00008,
         0x00010, 0x00020, 0x00040, 0x00080,

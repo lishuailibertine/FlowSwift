@@ -34,4 +34,16 @@ extension String {
         let endIndex = index(startIndex, offsetBy: indexs.upperBound)
         return String(self[startIndex..<endIndex])
     }
+    
+}
+
+//other
+extension String {
+    func stripHexPrefix() -> String {
+        if hasPrefix("0x") {
+            let indexStart = index(startIndex, offsetBy: 2)
+            return String(self[indexStart...])
+        }
+        return self
+    }
 }

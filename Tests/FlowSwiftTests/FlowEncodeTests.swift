@@ -32,17 +32,7 @@ public enum NJsonValueType: Encodable{
 class FlowEncodeTests: XCTestCase {
 
     func test_encode() throws {
-      // string
-//        let str: JsonValueObject<String> = FlowEncode.prepareString(value: "11")
-//        debugPrint(str)
-//
-//        // dic
-//
-//        let dicValue = ["1": "2"]
-//        let empty: JsonValueObject<JsonDictionaryItem<String>> = FlowEncode.prepareDictionary(valueMap: dicValue)
-//        let data = try JSONEncoder().encode(empty)
-//        debugPrint(String(data: data, encoding: .utf8)!)
-        
+
         let array: [Encodable] = [1, "1", FlowAddress(address: "")]
         
     }

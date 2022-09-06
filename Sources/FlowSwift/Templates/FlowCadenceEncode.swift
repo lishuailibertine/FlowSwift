@@ -51,7 +51,7 @@ public struct JsonCadenceObject: Encodable{
         
         public func encode(to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
-            container.encode(self.rawValue)
+            try container.encode(self.rawValue)
         }
     }
     public indirect enum JsonValueObject {
