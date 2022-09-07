@@ -81,7 +81,7 @@ public struct JsonCadenceObject: Encodable{
         case fix64(Double)
         case uFix64(Double)
         case array([JsonCadenceObject])
-        case dictionary(JsonDictionaryItem)
+        case dictionary([JsonDictionaryItem])
         case `struct`(JsonCompositeValue)
         case resource(JsonCompositeValue)
         case event(JsonCompositeValue)
