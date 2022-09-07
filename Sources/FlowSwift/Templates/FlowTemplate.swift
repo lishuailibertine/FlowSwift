@@ -21,10 +21,10 @@ public struct FlowTemplate {
         case removeAccountKeyTemplate = "RemoveAccountKeyTemplate"
     }
     
-    public func content(type: FlowTemplateType) throws -> String{
+    public static func content(type: FlowTemplateType) throws -> String{
         guard let templateUrl = Bundle.module.url(forResource: type.rawValue, withExtension: "txt") else {
             throw FlowTemplateError.invalidTemplate
         }
-        return  try String(contentsOf: templateUrl, encoding: .utf8)
+        return try "\n" + String(contentsOf: templateUrl, encoding: .utf8)
     }
 }

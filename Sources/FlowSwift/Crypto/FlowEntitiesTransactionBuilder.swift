@@ -53,12 +53,9 @@ public struct FlowEntitiesTransactionBuilder{
         case transaction = "FLOW-V0.0-transaction"
         case user = "FLOW-V0.0-user"
     }
-    public enum FlowTransactionError: Error, LocalizedError {
-        case signPayloadError
-        case signEnvelopeError
-        case rlpEncodeError
-    }
     public var messageType: FlowMessageType
+    public var transaction: Flow_Entities_Transaction
+    
     private func prefixData() -> Data {
         guard let bytes = messageType.rawValue.data(using: .utf8) else {
             return Data()
@@ -67,17 +64,7 @@ public struct FlowEntitiesTransactionBuilder{
     }
     private var payloadSignatures: [FlowEntitiesTransactionSignature]
     private var envelopeSignatures: [FlowEntitiesTransactionSignature]
-    private var transaction: Flow_Entities_Transaction
-    
-    @discardableResult
-    public mutating func buildTransaction() -> Flow_Entities_Transaction{
-        
-        let transaction = Flow_Entities_Transaction.with{ _ in
-            
-        }
-        self.transaction = transaction
-        return transaction
-    }
+   
     
     public mutating func  signPayload(address: FlowAddress, keyIndex: Int, signer: FlowKeypairInterface, hashingAlgorithm: FlowHashingAlgorithm) throws {
         guard let rlpData = RLP.encodeArray(transaction.payloadData) else {

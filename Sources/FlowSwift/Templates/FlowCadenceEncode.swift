@@ -177,3 +177,18 @@ extension JsonCadenceObject.JsonValueObject: Encodable{
         }
     }
 }
+
+extension JsonCadenceObject{
+    public func jsonData() -> Data?{
+        guard let data = try? JSONEncoder().encode(self) else {
+            return nil
+        }
+        guard let jsonString = String(data: data, encoding: .utf8) else {
+            return nil
+        }
+        guard let jsonData = "\(jsonString)\n".data(using: .utf8) else {
+            return nil
+        }
+        return jsonData
+    }
+}
