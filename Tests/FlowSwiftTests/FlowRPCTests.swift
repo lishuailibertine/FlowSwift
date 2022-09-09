@@ -6,19 +6,32 @@
 //
 
 import XCTest
+import PromiseKit
+
 @testable import FlowSwift
 class FlowRPCTests: XCTestCase {
 
-    
-    func testExample() throws {
-        
-    
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    var rpc: FlowGRPCRequest {
+        return FlowGRPCRequest.shared
     }
-
-
+   
+    func test_getAccount() throws {
+        let expectation = XCTestExpectation(description: #function)
+        
+//         rpc.queryAccount(address: "")
+        
+        test_error().done { hh in
+            debugPrint(hh)
+        }.catch { error in
+            debugPrint(error)
+        }
+        expectation.fulfill()
+        
+    }
+    
+    func test_error() -> Promise<String> {
+        return Promise { seal in
+            throw NSError(domain: "", code: 2, userInfo: nil)
+        }
+    }
 }

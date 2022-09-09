@@ -12,4 +12,7 @@ public enum FlowTransactionError: Error, LocalizedError {
     case signEnvelopeError
     case rlpEncodeError
     case buildTransferTransactionError
+    case buildCreateAccountTransactionError
+    case buildAddAccountKeyTransactionError
+    case buildRemoveAccountKeyTransactionError
 }

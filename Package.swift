@@ -25,6 +25,7 @@ let package = Package(
         .package(url: "https://github.com/grpc/grpc-swift", from: "1.0.0"),
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift", branch: "main"),
         .package(url: "https://github.com/attaswift/BigInt", from: "5.3.0"),
+        .package(url: "https://github.com/mxcl/PromiseKit.git", .upToNextMajor(from: "6.16.2")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -34,7 +35,7 @@ let package = Package(
             dependencies: []),
         .target(
             name: "FlowSwift",
-            dependencies: [.product(name: "SwiftProtobuf", package: "swift-protobuf"), .product(name: "GRPC", package: "grpc-swift"), "CryptoSwift", "Secp256k1Swift", "SECP256r1", "BigInt"],
+            dependencies: [.product(name: "SwiftProtobuf", package: "swift-protobuf"), .product(name: "GRPC", package: "grpc-swift"), "CryptoSwift", "Secp256k1Swift", "SECP256r1", "BigInt", "PromiseKit"],
             resources: [.process("Templates/Contracts")]),
         .testTarget(
             name: "FlowSwiftTests",

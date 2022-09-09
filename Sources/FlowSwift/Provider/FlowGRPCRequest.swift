@@ -10,6 +10,7 @@ import GRPC
 import SwiftProtobuf
 import NIO
 import CryptoSwift
+import PromiseKit
 
 public struct FlowGRPCRequest{
     public var host: String
@@ -35,82 +36,89 @@ public struct FlowGRPCRequest{
         return channel
     }
     
-    public func queryAccount(address: String) throws -> Flow_Access_GetAccountResponse {
-        let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 5)
-        defer {
-            do {
-                try eventLoop.syncShutdownGracefully()
-            } catch let error {
-                print("queryAccount error: \(error)")
+    public func queryAccount(address: String) -> Promise<Flow_Access_GetAccountResponse> {
+        return Promise { seal in
+            let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 5)
+            defer {
+                do {
+                    try eventLoop.syncShutdownGracefully()
+                } catch let error {
+                    print("queryAccount error: \(error)")
+                }
             }
+            let getAccountRequest = Flow_Access_GetAccountRequest.with {
+                $0.address = Data(hex: address)
+            }
+            seal.fulfill(try Flow_Access_AccessAPIClient(channel: self.channel(group: eventLoop)).getAccount(getAccountRequest).response.wait())
         }
-        let getAccountRequest = Flow_Access_GetAccountRequest.with {
-            $0.address = Data(hex: address)
-        }
-        return try Flow_Access_AccessAPIClient(channel: self.channel(group: eventLoop)).getAccount(getAccountRequest).response.wait()
     }
     
-    public func queryLatestBlock(sealed: Bool) throws -> Flow_Access_BlockResponse {
-        
-        let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 5)
-        defer {
-            do {
-                try eventLoop.syncShutdownGracefully()
-            } catch let error {
-                print("queryLatestBlock error: \(error)")
+    public func queryLatestBlock(sealed: Bool) -> Promise<Flow_Access_BlockResponse>  {
+        return Promise { seal in
+            let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 5)
+            defer {
+                do {
+                    try eventLoop.syncShutdownGracefully()
+                } catch let error {
+                    print("queryLatestBlock error: \(error)")
+                }
             }
+            let getLastBlock = Flow_Access_GetLatestBlockRequest.with {
+                $0.isSealed = sealed
+            }
+            seal.fulfill(try Flow_Access_AccessAPIClient(channel: self.channel(group: eventLoop)).getLatestBlock(getLastBlock).response.wait())
         }
-        let getLastBlock = Flow_Access_GetLatestBlockRequest.with {
-            $0.isSealed = sealed
-        }
-        return try Flow_Access_AccessAPIClient(channel: self.channel(group: eventLoop)).getLatestBlock(getLastBlock).response.wait()
     }
     
-    public func sendTransaction(transactionMessage: Flow_Entities_Transaction)  throws -> Flow_Access_SendTransactionResponse {
-        
-        let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 5)
-        defer {
-            do {
-                try eventLoop.syncShutdownGracefully()
-            } catch let error {
-                print("sendTransaction error: \(error)")
+    public func sendTransaction(transactionMessage: Flow_Entities_Transaction) -> Promise<Flow_Access_SendTransactionResponse>  {
+        return Promise { seal in
+            let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 5)
+            defer {
+                do {
+                    try eventLoop.syncShutdownGracefully()
+                } catch let error {
+                    print("sendTransaction error: \(error)")
+                }
             }
+            let sendTransactionRequest = Flow_Access_SendTransactionRequest.with {
+                $0.transaction = transactionMessage
+            }
+            seal.fulfill(try Flow_Access_AccessAPIClient(channel: self.channel(group: eventLoop)).sendTransaction(sendTransactionRequest).response.wait())
         }
-        let sendTransactionRequest = Flow_Access_SendTransactionRequest.with {
-            $0.transaction = transactionMessage
-        }
-        return try Flow_Access_AccessAPIClient(channel: self.channel(group: eventLoop)).sendTransaction(sendTransactionRequest).response.wait()
     }
     
-    public func queryTransactionResult(id_p: Data) throws -> Flow_Access_TransactionResultResponse {
-
-        let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 5)
-        defer {
-            do {
-                try eventLoop.syncShutdownGracefully()
-            } catch let error {
-                print("queryTransactionResult error: \(error)")
+    public func queryTransactionResult(id_p: Data) -> Promise<Flow_Access_TransactionResultResponse>  {
+        return Promise { seal in
+            let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 5)
+            defer {
+                do {
+                    try eventLoop.syncShutdownGracefully()
+                } catch let error {
+                    print("queryTransactionResult error: \(error)")
+                }
             }
+            let getTransactionResult = Flow_Access_GetTransactionRequest.with{
+                $0.id = id_p
+            }
+            seal.fulfill(try Flow_Access_AccessAPIClient(channel: self.channel(group: eventLoop)).getTransactionResult(getTransactionResult).response.wait())
         }
-        let getTransactionResult = Flow_Access_GetTransactionRequest.with{
-            $0.id = id_p
-        }
-        return try Flow_Access_AccessAPIClient(channel: self.channel(group: eventLoop)).getTransactionResult(getTransactionResult).response.wait()
     }
     
-    public func executeScript(script: Data, arguments: [Data]) throws -> Flow_Access_ExecuteScriptResponse {
-        let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 5)
-        defer {
-            do {
-                try eventLoop.syncShutdownGracefully()
-            } catch let error {
-                print("executeScript error: \(error)")
+    public func executeScript(script: Data, arguments: [Data]) -> Promise<Flow_Access_ExecuteScriptResponse>  {
+        return Promise { seal in
+            let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 5)
+            defer {
+                do {
+                    try eventLoop.syncShutdownGracefully()
+                } catch let error {
+                    print("executeScript error: \(error)")
+                }
             }
+            let executeScriptRequest = Flow_Access_ExecuteScriptAtLatestBlockRequest.with{
+                $0.arguments = arguments
+                $0.script = script
+            }
+            seal.fulfill(try Flow_Access_AccessAPIClient(channel: self.channel(group: eventLoop)).executeScriptAtLatestBlock(executeScriptRequest).response.wait())
         }
-        let executeScriptRequest = Flow_Access_ExecuteScriptAtLatestBlockRequest.with{
-            $0.arguments = arguments
-            $0.script = script
-        }
-        return try Flow_Access_AccessAPIClient(channel: self.channel(group: eventLoop)).executeScriptAtLatestBlock(executeScriptRequest).response.wait()
     }
 }
