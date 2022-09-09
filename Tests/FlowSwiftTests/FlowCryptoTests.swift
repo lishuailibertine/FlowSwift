@@ -18,7 +18,7 @@ class FlowCryptoTests: XCTestCase {
         XCTAssert(FlowAddress.checkIntoAddress(chainCodeWord: .codeword_testnet, address: address))
     }
 
-    func test_createAccount_secp256k1_publicKey() throws {
+    func test_account_publicKey() throws {
         let secp256k1Keypair = try FlowSecp256k1Keypair(privateData: Data(hex: "a66165eb30c346688ad17d56eff7641cbf2dab7c3022b492b8cbad27838352e5"))
         XCTAssert(secp256k1Keypair.publicData.toHexString() == "c4ac362d98a8a74fc671d2ac0f58d5de7dd88b13b9639a9146a14d4c1b41e253a3fcd1a564e68f337abe69d048fd0cab90443b4ebc2529a1740613eda4f2e2d6")
         

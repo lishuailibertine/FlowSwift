@@ -17,17 +17,19 @@ class FlowRPCTests: XCTestCase {
    
     func test_getAccount() throws {
         
-        let expectation = XCTestExpectation(description: #function)
+        let expectation = expectation(description: "testGRPC")
         let key = try FlowECDSAP256Keypair(privateData: Data(hex: "af39ff9ad1db0c6df7c2e359f80ac95d71a82a4c03d3f169e98a81db00f9b717"))
-        debugPrint("publicKey: \(key.publicData.toHexString())")
         rpc.queryAccount(address: "0xa2dcfc6200593335").done { account in
-            debugPrint(account)
-            account.account.keys.map { accountKey in
-                debugPrint(accountKey.publicKey.toHexString())
+            let keys =  account.account.keys.filter{$0.publicKey == key.publicData}
+            if keys.count > 0 {
+                debugPrint("key be found: \(keys.first!.publicKey.toHexString())")
+            }else{
+                debugPrint("key not be found")
             }
             expectation.fulfill()
         }.catch { error in
             debugPrint(error)
+            expectation.fulfill()
         }
         waitForExpectations(timeout: 10)
     }
