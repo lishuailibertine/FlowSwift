@@ -31,7 +31,7 @@ class FlowCryptoTests: XCTestCase {
         //6595beefa6ace3aef00ccaed699b8468974bf2fed3f4272b56a40b746a0a3cc5fd6064da400efd5bd58b63014d8ec977a798074c92b714c8884f5e1881632725
         debugPrint("p256 publicKey: " + p256Keypair.publicData.toHexString())
         
-        XCTAssert(FlowAddress.checkIntoAddress(chainCodeWord: .codeword_emulatornet, address: "0xa2dcfc6200593335"))
+        XCTAssert(FlowAddress.checkIntoAddress(chainCodeWord: .codeword_testnet, address: "0xa2dcfc6200593335"))
     }
     
 }

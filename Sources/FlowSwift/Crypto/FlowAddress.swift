@@ -66,7 +66,7 @@ public struct FlowAddress: Codable {
     ]
     
     public static func checkIntoAddress(chainCodeWord: FlowChainId = .codeword_mainnet, address: String) -> Bool {
-        let _address = address.hasPrefix("0x") ? address[3...] : address
+        let _address = address.hasPrefix("0x") ? address[2...] : address
         let addressData = Data(hex: _address)
         if addressData.count == AddressLength {
             let address_int64: UInt64 = getUInt64(bytes: addressData.bytes, startIndex: 0)
