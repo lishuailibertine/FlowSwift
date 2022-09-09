@@ -35,6 +35,7 @@ public protocol FlowKeypairInterface {
     var privateData: Data { get }
     var publicData: Data { get }
     init(privateData: Data) throws
+    init() throws
     func sign(message: Data, hashingAlgorithm: FlowHashingAlgorithm) throws -> Data
     func signAlgorithm() -> FlowSigningAlgorithm
 }
@@ -45,10 +46,20 @@ public struct FlowSecp256k1Keypair: FlowKeypairInterface {
     
     public init(privateData: Data) throws {
         self.privateData = privateData
-        guard let publicKey = SECP256K1.privateToPublic(privateKey: privateData, compressed: true) else {
+        guard let publicKey = SECP256K1.privateToPublic(privateKey: privateData, compressed: false) else {
             throw FlowKeypairError.invalidPrivateKey
         }
-        self.publicData = publicKey
+        guard publicKey.count == 65 else {
+            throw FlowKeypairError.invalidPrivateKey
+        }
+        self.publicData = publicKey.subdata(in: 1..<65)
+    }
+    
+    public init() throws {
+        guard let privateData = SECP256K1.generatePrivateKey() else {
+            throw FlowKeypairError.invalidPrivateKey
+        }
+        try self.init(privateData: privateData)
     }
     
     public func sign(message: Data, hashingAlgorithm: FlowHashingAlgorithm) throws -> Data {
@@ -76,7 +87,18 @@ public struct FlowECDSAP256Keypair: FlowKeypairInterface {
         guard let curveCrypto = GMEllipticCurveCrypto(forKey: privateData) else {
             throw FlowKeypairError.invalidPrivateKey
         }
-        self.publicData = curveCrypto.publicKey
+        guard curveCrypto.publicKey.count == 65 else {
+            throw FlowKeypairError.invalidPrivateKey
+        }
+        self.publicData = curveCrypto.publicKey.subdata(in: 1..<65)
+    }
+    
+    public init() throws {
+        guard let curveCrypto = GMEllipticCurveCrypto.generateKeyPair(for: GMEllipticCurveSecp256r1) else {
+            throw FlowKeypairError.invalidPrivateKey
+        }
+        self.privateData = curveCrypto.privateKey
+        self.publicData = curveCrypto.publicKey.subdata(in: 1..<65)
     }
     
     public func sign(message: Data, hashingAlgorithm: FlowHashingAlgorithm) throws -> Data {

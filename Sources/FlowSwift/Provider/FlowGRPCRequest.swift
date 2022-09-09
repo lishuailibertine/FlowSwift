@@ -16,7 +16,7 @@ public struct FlowGRPCRequest{
     public var host: String
     public var port: Int
     public static let shared = FlowGRPCRequest()
-    public init(host: String = "access.mainnet.nodes.onflow.org", port: Int = 9000){
+    public init(host: String = "access.devnet.nodes.onflow.org", port: Int = 9000){
         self.host = host
         self.port = port
     }

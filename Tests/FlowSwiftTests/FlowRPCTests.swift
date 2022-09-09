@@ -16,22 +16,19 @@ class FlowRPCTests: XCTestCase {
     }
    
     func test_getAccount() throws {
+        
         let expectation = XCTestExpectation(description: #function)
-        
-//         rpc.queryAccount(address: "")
-        
-        test_error().done { hh in
-            debugPrint(hh)
+        let key = try FlowECDSAP256Keypair(privateData: Data(hex: "af39ff9ad1db0c6df7c2e359f80ac95d71a82a4c03d3f169e98a81db00f9b717"))
+        debugPrint("publicKey: \(key.publicData.toHexString())")
+        rpc.queryAccount(address: "0xa2dcfc6200593335").done { account in
+            debugPrint(account)
+            account.account.keys.map { accountKey in
+                debugPrint(accountKey.publicKey.toHexString())
+            }
+            expectation.fulfill()
         }.catch { error in
             debugPrint(error)
         }
-        expectation.fulfill()
-        
-    }
-    
-    func test_error() -> Promise<String> {
-        return Promise { seal in
-            throw NSError(domain: "", code: 2, userInfo: nil)
-        }
+        waitForExpectations(timeout: 10)
     }
 }
