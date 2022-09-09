@@ -11,9 +11,7 @@ import PromiseKit
 @testable import FlowSwift
 class FlowRPCTests: XCTestCase {
 
-    var rpc: FlowGRPCRequest {
-        return FlowGRPCRequest.shared
-    }
+    let rpc: FlowGRPCRequest = FlowGRPCRequest.shared
    
     func test_getAccount() throws {
         
