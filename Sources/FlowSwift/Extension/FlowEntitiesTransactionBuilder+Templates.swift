@@ -10,7 +10,7 @@ import Foundation
 extension FlowEntitiesTransactionBuilder {
     // transfer
     @discardableResult
-    public func transfer(amount: String, toAddress: FlowAddress, auths: [FlowAddress], payer: FlowAddress, gasLimit: UInt64) throws -> Self{
+    public func configTransfer(amount: String, toAddress: FlowAddress, auths: [FlowAddress], payer: FlowAddress, gasLimit: UInt64) throws -> Self{
         
         try configScript(script: FlowTemplate.content(type: .transferTemplate))
         guard let amountValueData = JsonCadenceObject(type: .ufix64Type, value: .uFix64(Double(amount) ?? 0)).jsonData() else {
@@ -28,7 +28,7 @@ extension FlowEntitiesTransactionBuilder {
 
     // createAccount
     @discardableResult
-    public func createAccount(accountKeys: [Flow_Entities_AccountKey], contracts: [FlowContract], auths: [FlowAddress], payer: FlowAddress, gasLimit: UInt64) throws -> Self {
+    public func configCreateAccount(accountKeys: [Flow_Entities_AccountKey], contracts: [FlowContract], auths: [FlowAddress], payer: FlowAddress, gasLimit: UInt64) throws -> Self {
 
         try configScript(script: FlowTemplate.content(type: .createAccountTemplate))
         let publicKeyValue = accountKeys.compactMap { accountKey -> JsonCadenceObject? in
@@ -55,7 +55,7 @@ extension FlowEntitiesTransactionBuilder {
     
     // addAccountKey
     @discardableResult
-    public func addAccountKey(auths: [FlowAddress], payer: FlowAddress, gasLimit: UInt64, accountKey: Flow_Entities_AccountKey) throws -> Self{
+    public func configAddAccountKey(auths: [FlowAddress], payer: FlowAddress, gasLimit: UInt64, accountKey: Flow_Entities_AccountKey) throws -> Self{
 
         try configScript(script: FlowTemplate.content(type: .addAccountKeyTemplate))
         guard let encodeStr = RLP.encode(accountKey.accountKeyData)?.toHexString() else{
@@ -73,7 +73,7 @@ extension FlowEntitiesTransactionBuilder {
     
     // removeAccountKey
     @discardableResult
-    public func removeAccountKey(auths: [FlowAddress], keyIndex: Int, payer: FlowAddress, gasLimit: UInt64) throws -> Self{
+    public func configRemoveAccountKey(auths: [FlowAddress], keyIndex: Int, payer: FlowAddress, gasLimit: UInt64) throws -> Self{
         
         try configScript(script: FlowTemplate.content(type: .removeAccountKeyTemplate))
         guard let keyIndexData = JsonCadenceObject(type: .intType, value: .int(keyIndex)).jsonData() else {

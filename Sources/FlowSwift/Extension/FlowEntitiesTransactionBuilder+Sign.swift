@@ -8,7 +8,7 @@
 import Foundation
 extension FlowEntitiesTransactionBuilder{
     @discardableResult
-    public func configSignPayload(address: FlowAddress, keyIndex: Int, signer: FlowKeypairInterface, hashingAlgorithm: FlowHashingAlgorithm) throws -> Self {
+    public func signPayload(address: FlowAddress, keyIndex: Int, signer: FlowKeypairInterface, hashingAlgorithm: FlowHashingAlgorithm) throws -> Self {
         guard let rlpData = RLP.encodeArray(payloadData) else {
             throw FlowTransactionError.rlpEncodeError
         }
@@ -33,7 +33,7 @@ extension FlowEntitiesTransactionBuilder{
     }
     
     @discardableResult
-    public func configSignEnvelope(address: FlowAddress, keyIndex: Int, signer: FlowKeypairInterface, hashingAlgorithm: FlowHashingAlgorithm) throws -> Self {
+    public func signEnvelope(address: FlowAddress, keyIndex: Int, signer: FlowKeypairInterface, hashingAlgorithm: FlowHashingAlgorithm) throws -> Self {
         guard let rlpData = RLP.encodeArray(FlowEnvelopeCanonicalForm(payload: payloadData, payloadSignatures: payloadSignatures).envelopePayload) else {
             throw FlowTransactionError.rlpEncodeError
         }

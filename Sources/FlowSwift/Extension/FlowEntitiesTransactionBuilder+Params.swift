@@ -11,7 +11,7 @@ extension FlowEntitiesTransactionBuilder{
     @discardableResult
     public func configScript(script: String) throws -> Self{
         guard let scriptData = script.data(using: .utf8) else {
-            throw FlowTransactionError.buildTransferTransactionError
+            throw FlowTransactionError.scriptError
         }
         transaction.script = scriptData
         return self

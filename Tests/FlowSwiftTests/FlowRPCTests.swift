@@ -47,10 +47,10 @@ class FlowRPCTests: XCTestCase {
                 throw FlowTransactionError.buildTransferTransactionError
             }
             let buildTransaction = try FlowEntitiesTransactionBuilder()
-                .transfer(amount: amount, toAddress: toAddress, auths: [fromAddress], payer: fromAddress, gasLimit: 300)
+                .configTransfer(amount: amount, toAddress: toAddress, auths: [fromAddress], payer: fromAddress, gasLimit: 300)
                 .configProposalkey(address: fromAddress.addressData, keyID: accountKey.index, sequenceNumber: UInt64(accountKey.sequenceNumber))
                 .configReferenceBlockID(referenceBlockID: blockResponse.block.id)
-                .configSignEnvelope(address: fromAddress, keyIndex: Int(accountKey.index), signer: key, hashingAlgorithm: .SHA3_256)
+                .signEnvelope(address: fromAddress, keyIndex: Int(accountKey.index), signer: key, hashingAlgorithm: .SHA3_256)
          
             return Promise{ seal in
                 self.rpc.sendTransaction(builder: buildTransaction).done { response in
