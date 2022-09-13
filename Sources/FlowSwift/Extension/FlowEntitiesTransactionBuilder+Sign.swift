@@ -28,6 +28,7 @@ extension FlowEntitiesTransactionBuilder{
         payloadSignatures.append(transactionSignature)
         payloadSignatures = payloadSignatures.sorted(by: <)
         refreshSignerIndex()
+        transaction.payloadSignatures = payloadSignatures.compactMap{$0.transactionSignature}
         return self
     }
     
@@ -51,6 +52,7 @@ extension FlowEntitiesTransactionBuilder{
         envelopeSignatures.append(transactionSignature)
         envelopeSignatures = envelopeSignatures.sorted(by: <)
         refreshSignerIndex()
+        transaction.envelopeSignatures = envelopeSignatures.compactMap{$0.transactionSignature}
         return self
     }
     private func prefixData() -> Data {

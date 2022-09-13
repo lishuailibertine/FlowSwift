@@ -70,7 +70,7 @@ public struct FlowGRPCRequest{
         }
     }
     
-    public func sendTransaction(transactionMessage: Flow_Entities_Transaction) -> Promise<Flow_Access_SendTransactionResponse>  {
+    public func sendTransaction(builder: FlowEntitiesTransactionBuilder) -> Promise<Flow_Access_SendTransactionResponse>  {
         return Promise { seal in
             let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 5)
             defer {
@@ -81,7 +81,7 @@ public struct FlowGRPCRequest{
                 }
             }
             let sendTransactionRequest = Flow_Access_SendTransactionRequest.with {
-                $0.transaction = transactionMessage
+                $0.transaction = builder.transaction
             }
             seal.fulfill(try Flow_Access_AccessAPIClient(channel: self.channel(group: eventLoop)).sendTransaction(sendTransactionRequest).response.wait())
         }

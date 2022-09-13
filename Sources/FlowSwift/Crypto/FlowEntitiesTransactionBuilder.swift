@@ -18,8 +18,9 @@ public struct FlowEntitiesTransactionBuilder{
     public var messageType: FlowMessageType = .transaction
     
     internal var transaction: Flow_Entities_Transaction = Flow_Entities_Transaction()
-    internal var payloadSignatures: [FlowEntitiesTransactionSignature]
-    internal var envelopeSignatures: [FlowEntitiesTransactionSignature]
+    internal var payloadSignatures = [FlowEntitiesTransactionSignature]()
+    internal var envelopeSignatures = [FlowEntitiesTransactionSignature]()
+    
     
     internal var signerMap: [Int: FlowAddressData]{
         var signers = [FlowAddressData]()

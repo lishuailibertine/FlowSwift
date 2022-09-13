@@ -13,7 +13,7 @@ extension FlowEntitiesTransactionBuilder {
     public mutating func transfer(amount: String, toAddress: FlowAddress, auths: [FlowAddress], payer: FlowAddress, gasLimit: UInt64) throws -> Self{
         
         try configScript(script: FlowTemplate.content(type: .transferTemplate))
-        guard let amountValueData = JsonCadenceObject(type: .uint64Type, value: .uInt64(UInt64(amount) ?? 0)).jsonData() else {
+        guard let amountValueData = JsonCadenceObject(type: .ufix64Type, value: .uFix64(Double(amount) ?? 0)).jsonData() else {
             throw FlowTransactionError.buildTransferTransactionError
         }
         guard let addressValueData = JsonCadenceObject(type: .addressType, value: .address(toAddress)).jsonData() else {

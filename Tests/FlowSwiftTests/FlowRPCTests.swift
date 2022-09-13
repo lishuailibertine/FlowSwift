@@ -31,4 +31,45 @@ class FlowRPCTests: XCTestCase {
         }
         waitForExpectations(timeout: 10)
     }
+    //测试时把主网的合约地址修改为测试网
+    func test_sendTransaction() throws {
+        let expectation = expectation(description: "testGRPC")
+        let key = try FlowECDSAP256Keypair(privateData: Data(hex: "af39ff9ad1db0c6df7c2e359f80ac95d71a82a4c03d3f169e98a81db00f9b717"))
+        let fromAddress = FlowAddress(address: "0xa2dcfc6200593335", chainCodeWord: .codeword_testnet)!
+        let toAddress = FlowAddress(address: "0x025aa094fc7cca30", chainCodeWord: .codeword_testnet)!
+        let amount = "1"
+        firstly {
+            when(fulfilled: rpc.queryAccount(address: fromAddress.address),
+                 rpc.queryLatestBlock(sealed: true))
+        }.then { (accountResponse, blockResponse) -> Promise<Data> in
+            var buildTransaction = FlowEntitiesTransactionBuilder()
+            try buildTransaction.transfer(amount: amount, toAddress: toAddress, auths: [fromAddress], payer: fromAddress, gasLimit: 300)
+            
+            let accountkeys =  accountResponse.account.keys.filter{$0.publicKey == key.publicData}
+            guard let accountKey = accountkeys.first else {
+                throw FlowTransactionError.buildTransferTransactionError
+            }
+            try buildTransaction.configProposalkey(address: fromAddress.addressData, keyID: accountKey.index, sequenceNumber: UInt64(accountKey.sequenceNumber))
+            try buildTransaction.configReferenceBlockID(referenceBlockID: blockResponse.block.id)
+            
+            try buildTransaction.configSignEnvelope(address: fromAddress, keyIndex: Int(accountKey.index), signer: key, hashingAlgorithm: .SHA3_256)
+            
+            return Promise{ seal in
+                self.rpc.sendTransaction(builder: buildTransaction).done { response in
+                    seal.fulfill(response.id)
+                }.catch { error in
+                    seal.reject(error)
+                }
+            }
+            
+        }.done{ id  in
+            debugPrint("txId: \(id.toHexString())")
+            
+        }.catch { error in
+            debugPrint("send Transaction error: \(error)")
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10)
+    }
 }

@@ -23,8 +23,8 @@ public struct FlowAddress: Codable {
     private static let AddressLength: Int = (linearCodeN + 7) >> 3
     
     public let address: String
-    public init?(address: String) {
-        guard FlowAddress.checkIntoAddress(address: address) else {
+    public init?(address: String, chainCodeWord: FlowChainId = .codeword_mainnet) {
+        guard FlowAddress.checkIntoAddress(chainCodeWord: chainCodeWord, address: address) else {
             return nil
         }
         self.address = address
