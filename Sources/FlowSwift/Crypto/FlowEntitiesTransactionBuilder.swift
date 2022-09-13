@@ -65,23 +65,7 @@ public struct FlowEntitiesTransactionBuilder{
     private var envelopeSignatures: [FlowEntitiesTransactionSignature]
    
     @discardableResult
-    public mutating func configProposalkey(address: Data, keyID: UInt32, sequenceNumber: UInt64) -> FlowEntitiesTransactionBuilder {
-        transaction.proposalKey = Flow_Entities_Transaction.ProposalKey.with{
-            $0.address = address
-            $0.keyID = keyID
-            $0.sequenceNumber = sequenceNumber
-        }
-        return self
-    }
-    
-    @discardableResult
-    public mutating func configAuthorizers(auths: [FlowAddress]) -> FlowEntitiesTransactionBuilder {
-        auths.forEach{transaction.authorizers.append($0.addressData)}
-        return self
-    }
-    
-    @discardableResult
-    public mutating func  signPayload(address: FlowAddress, keyIndex: Int, signer: FlowKeypairInterface, hashingAlgorithm: FlowHashingAlgorithm) throws -> FlowEntitiesTransactionBuilder {
+    public mutating func  configSignPayload(address: FlowAddress, keyIndex: Int, signer: FlowKeypairInterface, hashingAlgorithm: FlowHashingAlgorithm) throws -> FlowEntitiesTransactionBuilder {
         guard let rlpData = RLP.encodeArray(transaction.payloadData) else {
             throw FlowTransactionError.rlpEncodeError
         }
@@ -105,7 +89,7 @@ public struct FlowEntitiesTransactionBuilder{
     }
     
     @discardableResult
-    public mutating func  signEnvelope(address: FlowAddress, keyIndex: Int, signer: FlowKeypairInterface, hashingAlgorithm: FlowHashingAlgorithm) throws -> FlowEntitiesTransactionBuilder {
+    public mutating func  configSignEnvelope(address: FlowAddress, keyIndex: Int, signer: FlowKeypairInterface, hashingAlgorithm: FlowHashingAlgorithm) throws -> FlowEntitiesTransactionBuilder {
         guard let rlpData = RLP.encodeArray(FlowEnvelopeCanonicalForm(payload: transaction.payloadData, payloadSignatures: payloadSignatures).envelopePayload) else {
             throw FlowTransactionError.rlpEncodeError
         }
