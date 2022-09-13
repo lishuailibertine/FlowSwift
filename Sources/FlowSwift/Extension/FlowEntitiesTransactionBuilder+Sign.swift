@@ -9,7 +9,7 @@ import Foundation
 extension FlowEntitiesTransactionBuilder{
     @discardableResult
     public mutating func  configSignPayload(address: FlowAddress, keyIndex: Int, signer: FlowKeypairInterface, hashingAlgorithm: FlowHashingAlgorithm) throws -> Self {
-        guard let rlpData = RLP.encodeArray(transaction.payloadData) else {
+        guard let rlpData = RLP.encodeArray(payloadData) else {
             throw FlowTransactionError.rlpEncodeError
         }
         guard let signData = try? signer.sign(message: prefixData() + rlpData, hashingAlgorithm: hashingAlgorithm) else {
@@ -21,7 +21,7 @@ extension FlowEntitiesTransactionBuilder{
     
     @discardableResult
     public mutating func addPayloadSignature(address: FlowAddress, keyIndex: Int, signData: Data) -> Self{
-        let signers = transaction.signerMap.filter {$0.value == address.addressData}
+        let signers = signerMap.filter {$0.value == address.addressData}
         let signerIndex = signers.first?.key ?? -1
         
         let transactionSignature = FlowEntitiesTransactionSignature(address: address, signerIndex: signerIndex, keyIndex: keyIndex, signature: signData)
@@ -33,7 +33,7 @@ extension FlowEntitiesTransactionBuilder{
     
     @discardableResult
     public mutating func  configSignEnvelope(address: FlowAddress, keyIndex: Int, signer: FlowKeypairInterface, hashingAlgorithm: FlowHashingAlgorithm) throws -> Self {
-        guard let rlpData = RLP.encodeArray(FlowEnvelopeCanonicalForm(payload: transaction.payloadData, payloadSignatures: payloadSignatures).envelopePayload) else {
+        guard let rlpData = RLP.encodeArray(FlowEnvelopeCanonicalForm(payload: payloadData, payloadSignatures: payloadSignatures).envelopePayload) else {
             throw FlowTransactionError.rlpEncodeError
         }
         guard let signData = try? signer.sign(message: prefixData() + rlpData, hashingAlgorithm: hashingAlgorithm) else {
@@ -45,7 +45,7 @@ extension FlowEntitiesTransactionBuilder{
     
     @discardableResult
     public mutating func addEnvelopePayloadSignature(address: FlowAddress, keyIndex: Int, signData: Data) -> Self{
-        let signers = transaction.signerMap.filter {$0.value == address.addressData}
+        let signers = signerMap.filter {$0.value == address.addressData}
         let signerIndex = signers.first?.key ?? -1
         let transactionSignature = FlowEntitiesTransactionSignature(address: address, signerIndex: signerIndex, keyIndex: keyIndex, signature: signData)
         envelopeSignatures.append(transactionSignature)
@@ -60,7 +60,7 @@ extension FlowEntitiesTransactionBuilder{
         return bytes.fulfilZeroRight(maxSize: 32)
     }
     private mutating func refreshSignerIndex() {
-        let signerMap = transaction.signerMap
+        let signerMap = signerMap
         for (idx, obj) in payloadSignatures.enumerated() {
             let signers = signerMap.filter{$0.value == obj.transactionSignature.address}
             payloadSignatures[idx].signerIndex = signers.first?.key ?? -1

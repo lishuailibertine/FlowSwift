@@ -20,38 +20,35 @@ public struct FlowEntitiesTransactionBuilder{
     internal var transaction: Flow_Entities_Transaction = Flow_Entities_Transaction()
     internal var payloadSignatures: [FlowEntitiesTransactionSignature]
     internal var envelopeSignatures: [FlowEntitiesTransactionSignature]
-}
-
-//PayloadCanonicalForm
-extension Flow_Entities_Transaction{
-    public var payloadData: [Any] {
-        return [script,
-                arguments,
-                referenceBlockID,
-                BigUInt(gasLimit),
-                proposalKey.address,
-                BigUInt(proposalKey.keyID),
-                BigUInt(proposalKey.sequenceNumber),
-                payer,
-                authorizers]
-    }
-    var signerMap: [Int: FlowAddressData]{
+    
+    internal var signerMap: [Int: FlowAddressData]{
         var signers = [FlowAddressData]()
         //ProposalKey
-        if proposalKey.address.count > 0 {
-            signers.append(proposalKey.address)
+        if transaction.proposalKey.address.count > 0 {
+            signers.append(transaction.proposalKey.address)
         }
         //Payer
-        if payer.count > 0 {
-            signers.append(payer)
+        if transaction.payer.count > 0 {
+            signers.append(transaction.payer)
         }
         //authorizer
-        authorizers.forEach{signers.append($0)}
+        transaction.authorizers.forEach{signers.append($0)}
         
         var signerMap = [Int: FlowAddressData]()
         for (index, signer) in signers.enumerated() {
             signerMap[index] = signer
         }
         return signerMap
+    }
+    internal var payloadData: [Any] {
+        return [transaction.script,
+                transaction.arguments,
+                transaction.referenceBlockID,
+                BigUInt(transaction.gasLimit),
+                transaction.proposalKey.address,
+                BigUInt(transaction.proposalKey.keyID),
+                BigUInt(transaction.proposalKey.sequenceNumber),
+                transaction.payer,
+                transaction.authorizers]
     }
 }
