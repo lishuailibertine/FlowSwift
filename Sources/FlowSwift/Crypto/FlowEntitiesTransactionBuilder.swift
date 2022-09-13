@@ -10,7 +10,7 @@ import BigInt
 
 public typealias FlowAddressData = Data
 
-public struct FlowEntitiesTransactionBuilder{
+final public class FlowEntitiesTransactionBuilder{
     public enum FlowMessageType: String {
         case transaction = "FLOW-V0.0-transaction"
         case user = "FLOW-V0.0-user"
@@ -20,8 +20,7 @@ public struct FlowEntitiesTransactionBuilder{
     internal var transaction: Flow_Entities_Transaction = Flow_Entities_Transaction()
     internal var payloadSignatures = [FlowEntitiesTransactionSignature]()
     internal var envelopeSignatures = [FlowEntitiesTransactionSignature]()
-    
-    
+
     internal var signerMap: [Int: FlowAddressData]{
         var signers = [FlowAddressData]()
         //ProposalKey
@@ -41,6 +40,7 @@ public struct FlowEntitiesTransactionBuilder{
         }
         return signerMap
     }
+    
     internal var payloadData: [Any] {
         return [transaction.script,
                 transaction.arguments,
