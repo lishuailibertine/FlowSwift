@@ -27,5 +27,4 @@ class FlowCryptoTests: XCTestCase {
         
         XCTAssert(FlowAddress.checkIntoAddress(chainCodeWord: .codeword_testnet, address: "0xa2dcfc6200593335"))
     }
-    
 }

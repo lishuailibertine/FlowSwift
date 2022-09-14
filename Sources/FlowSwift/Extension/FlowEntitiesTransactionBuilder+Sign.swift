@@ -27,7 +27,6 @@ extension FlowEntitiesTransactionBuilder{
         let transactionSignature = FlowEntitiesTransactionSignature(address: address, signerIndex: signerIndex, keyIndex: keyIndex, signature: signData)
         payloadSignatures.append(transactionSignature)
         payloadSignatures = payloadSignatures.sorted(by: <)
-        refreshSignerIndex()
         transaction.payloadSignatures = payloadSignatures.compactMap{$0.transactionSignature}
         return self
     }
@@ -51,7 +50,6 @@ extension FlowEntitiesTransactionBuilder{
         let transactionSignature = FlowEntitiesTransactionSignature(address: address, signerIndex: signerIndex, keyIndex: keyIndex, signature: signData)
         envelopeSignatures.append(transactionSignature)
         envelopeSignatures = envelopeSignatures.sorted(by: <)
-        refreshSignerIndex()
         transaction.envelopeSignatures = envelopeSignatures.compactMap{$0.transactionSignature}
         return self
     }
@@ -61,17 +59,5 @@ extension FlowEntitiesTransactionBuilder{
             return Data()
         }
         return bytes.fulfilZeroRight(maxSize: 32)
-    }
-    
-    private func refreshSignerIndex() {
-        let signerMap = signerMap
-        for (idx, obj) in payloadSignatures.enumerated() {
-            let signers = signerMap.filter{$0.value == obj.transactionSignature.address}
-            payloadSignatures[idx].signerIndex = signers.first?.key ?? -1
-        }
-        for (idx, obj) in envelopeSignatures.enumerated() {
-            let signers = signerMap.filter{$0.value == obj.transactionSignature.address}
-            envelopeSignatures[idx].signerIndex = signers.first?.key ?? -1
-        }
     }
 }
