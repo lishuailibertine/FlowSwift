@@ -21,11 +21,11 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.18.0"),
-        .package(name: "Secp256k1Swift",url: "https://github.com/mathwallet/Secp256k1Swift.git", from: "1.2.5"),
+        .package(url: "https://github.com/mathwallet/Secp256k1Swift.git", from: "1.3.1"),
         .package(url: "https://github.com/grpc/grpc-swift", from: "1.0.0"),
-        .package(url: "https://github.com/krzyzanowskim/CryptoSwift", branch: "main"),
+        .package(url: "https://github.com/krzyzanowskim/CryptoSwift", from: "1.4.2"),
         .package(url: "https://github.com/attaswift/BigInt", from: "5.3.0"),
-        .package(url: "https://github.com/mxcl/PromiseKit.git", .upToNextMajor(from: "6.16.2")),
+        .package(url: "https://github.com/mxcl/PromiseKit.git", .upToNextMajor(from: "6.18.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
