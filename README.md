@@ -3,7 +3,7 @@
 ## Features
 * GRPC
 * Account address generation and verification
-* Support 'ECDSA_P256', 'Secp256k1'
+* Support 'Secp256r1', 'Secp256k1'
 
 ## Installation
 ### Swift Package Manager
@@ -27,3 +27,5 @@ XCTAssert(FlowAddress.checkIntoAddress(chainCodeWord: .codeword_testnet, address
 let address = FlowAddress.generateAddress(chainCodeWord: .codeword_testnet)
 XCTAssert(FlowAddress.checkIntoAddress(chainCodeWord: .codeword_testnet, address: address))
 ```
+## Other
+* P256 algorithm reference link: https://github.com/ricmoo/GMEllipticCurveCrypto
