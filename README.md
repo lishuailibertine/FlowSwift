@@ -3,7 +3,7 @@
 ## Features
 * GRPC
 * Account address generation and verification
-* Support 'Secp256r1', 'Secp256k1'
+* Support 'ECDSA_P256', 'Secp256k1'
 
 ## Installation
 ### Swift Package Manager
