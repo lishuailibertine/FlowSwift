@@ -9,5 +9,5 @@ import Foundation
 
 public enum FlowApiError: Error{
     case unknow
-    case configRequestError
+    case invalidUrl
 }

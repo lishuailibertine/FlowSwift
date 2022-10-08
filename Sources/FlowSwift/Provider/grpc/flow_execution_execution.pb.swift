@@ -15,7 +15,7 @@ import SwiftProtobuf
 // incompatible with the version of SwiftProtobuf to which you are linking.
 // Please ensure that you are building against the same version of the API
 // that was used to generate this file.
-fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAPIVersionCheck {
+private struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAPIVersionCheck {
   struct _2: SwiftProtobuf.ProtobufAPIVersion_2 {}
   typealias Version = _2
 }
@@ -72,7 +72,7 @@ public struct Flow_Execution_GetAccountAtBlockIDResponse {
 
   public init() {}
 
-  fileprivate var _account: Flow_Entities_Account? = nil
+  private var _account: Flow_Entities_Account? = nil
 }
 
 public struct Flow_Execution_ExecuteScriptAtBlockIDRequest {
@@ -191,7 +191,7 @@ extension Flow_Execution_GetTransactionResultResponse: @unchecked Sendable {}
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
-fileprivate let _protobuf_package = "flow.execution"
+private let _protobuf_package = "flow.execution"
 
 extension Flow_Execution_PingRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".PingRequest"

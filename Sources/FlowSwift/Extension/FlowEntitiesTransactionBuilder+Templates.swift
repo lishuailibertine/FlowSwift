@@ -43,7 +43,7 @@ extension FlowEntitiesTransactionBuilder {
         let contractValue = contracts.map { contract -> JsonDictionaryItem in
             return JsonDictionaryItem(key: JsonCadenceObject(type: .stringType, value: .string(contract.name)), value: JsonCadenceObject(type: .stringType, value: .string(contract.source)))
         }
-        guard let contractData = JsonCadenceObject(type: .dictionaryType, value:.dictionary(contractValue)).jsonData() else {
+        guard let contractData = JsonCadenceObject(type: .dictionaryType, value: .dictionary(contractValue)).jsonData() else {
             throw FlowTransactionError.buildCreateAccountTransactionError
         }
         try configPayer(payer: payer.addressData)

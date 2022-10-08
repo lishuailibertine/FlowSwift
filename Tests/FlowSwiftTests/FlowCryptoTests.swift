@@ -12,14 +12,12 @@ import CryptoSwift
 
 class FlowCryptoTests: XCTestCase {
 
-   
     func test_address() throws {
         let address = FlowAddress.generateAddress(chainCodeWord: .codeword_testnet)
         XCTAssert(FlowAddress.checkIntoAddress(chainCodeWord: .codeword_testnet, address: address))
     }
 
     func test_account_publicKey() throws {
-        debugPrint("\(String(data: Data(hex: "15537394"), encoding: .utf8))")
         let secp256k1Keypair = try FlowSecp256k1Keypair(privateData: Data(hex: "a66165eb30c346688ad17d56eff7641cbf2dab7c3022b492b8cbad27838352e5"))
         XCTAssert(secp256k1Keypair.publicData.toHexString() == "c4ac362d98a8a74fc671d2ac0f58d5de7dd88b13b9639a9146a14d4c1b41e253a3fcd1a564e68f337abe69d048fd0cab90443b4ebc2529a1740613eda4f2e2d6")
         

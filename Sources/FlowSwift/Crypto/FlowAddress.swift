@@ -48,7 +48,7 @@ public struct FlowAddress: Codable {
         0x0982b, 0x07034, 0x0682a, 0x05819,
         0x03807, 0x007d2, 0x00727, 0x0068e,
         0x0067c, 0x0059d, 0x004eb, 0x003b4,
-        0x0036a, 0x002d9, 0x001c7, 0x0003f,
+        0x0036a, 0x002d9, 0x001c7, 0x0003f
     ]
     static var generatorMatrixRows: [UInt64] = [
         0xe467b9dd11fa00df, 0xf233dcee88fe0abe, 0xf919ee77447b7497, 0xfc8cf73ba23a260d,
@@ -77,13 +77,13 @@ public struct FlowAddress: Codable {
     
     public static func validateChainAddress(chainCodeWord: FlowChainId = .codeword_mainnet, address: UInt64) -> Bool {
         var codeWord = address ^ chainCodeWord.rawValue
-        if (codeWord == 0) {
+        if codeWord == 0 {
             return false
         }
         var parity: UInt32 = 0
         for i in 0..<linearCodeN {
-            if ((codeWord & 1) == 1) {
-                parity ^= parityCheckMatrixColumns[i];
+            if (codeWord & 1) == 1 {
+                parity ^= parityCheckMatrixColumns[i]
             }
             codeWord >>= 1
         }
@@ -94,7 +94,7 @@ public struct FlowAddress: Codable {
         var address: UInt64 = 0
         for i in 0..<linearCodeK {
             
-            if ((index & 1) == 1) {
+            if (index & 1) == 1 {
                 address ^= generatorMatrixRows[i]
             }
             index = index >> 1

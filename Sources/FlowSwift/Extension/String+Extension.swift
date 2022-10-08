@@ -37,7 +37,7 @@ extension String {
     
 }
 
-//other
+// other
 extension String {
     func stripHexPrefix() -> String {
         if hasPrefix("0x") {
@@ -45,5 +45,12 @@ extension String {
             return String(self[indexStart...])
         }
         return self
+    }
+    func isGRPC() -> Bool {
+        let regex = try? NSRegularExpression(pattern: "^([A-Za-z0-9]{1,}\\.)+[A-Za-z0-9]{1,}(:\\d*)?$", options: .caseInsensitive)
+        if let result = regex?.matches(in: self, options: [], range: NSRange(location: 0, length: self.count)), result.count > 0 {
+            return true
+        }
+        return false
     }
 }

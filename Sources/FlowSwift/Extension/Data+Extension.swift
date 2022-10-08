@@ -13,14 +13,14 @@ extension Data {
         return Bytes(self)
     }
 
-    /// Initial the data with hex string
-    internal static func fromHex(_ hex: String) -> Data? {
-        let string = hex.lowercased().stripHexPrefix()
+    /// Initial the data with  string
+    internal static func fromString(_ str: String) -> Data? {
+        let string = str.lowercased().stripHexPrefix()
         guard let array = string.data(using: .utf8)?.bytes else {
             return nil
         }
         if array.isEmpty {
-            if hex == "0x" || hex == "" {
+            if str == "0x" || str == "" {
                 return Data()
             } else {
                 return nil
@@ -54,12 +54,12 @@ extension Data {
         return nil
     }
     
-    func constantTimeComparisonTo(_ other:Data?) -> Bool {
+    func constantTimeComparisonTo(_ other: Data?) -> Bool {
         guard let rhs = other else {return false}
         guard self.count == rhs.count else {return false}
         var difference = UInt8(0x00)
         for i in 0..<self.count { // compare full length
-            difference |= self[i] ^ rhs[i] //constant time
+            difference |= self[i] ^ rhs[i] // constant time
         }
         return difference == UInt8(0x00)
     }

@@ -15,7 +15,7 @@ import SwiftProtobuf
 // incompatible with the version of SwiftProtobuf to which you are linking.
 // Please ensure that you are building against the same version of the API
 // that was used to generate this file.
-fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAPIVersionCheck {
+private struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAPIVersionCheck {
   struct _2: SwiftProtobuf.ProtobufAPIVersion_2 {}
   typealias Version = _2
 }
@@ -142,7 +142,7 @@ public struct Flow_Entities_Transaction {
 
   public init() {}
 
-  fileprivate var _proposalKey: Flow_Entities_Transaction.ProposalKey? = nil
+  private var _proposalKey: Flow_Entities_Transaction.ProposalKey? = nil
 }
 
 #if swift(>=5.5) && canImport(_Concurrency)
@@ -154,7 +154,7 @@ extension Flow_Entities_Transaction.Signature: @unchecked Sendable {}
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
-fileprivate let _protobuf_package = "flow.entities"
+private let _protobuf_package = "flow.entities"
 
 extension Flow_Entities_TransactionStatus: SwiftProtobuf._ProtoNameProviding {
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [

@@ -38,6 +38,7 @@ public protocol FlowKeypairInterface {
     init() throws
     func sign(message: Data, hashingAlgorithm: FlowHashingAlgorithm) throws -> Data
     func signAlgorithm() -> FlowSigningAlgorithm
+    static func isValidPrivateKey(privateData: Data) -> Bool
 }
 
 public struct FlowSecp256k1Keypair: FlowKeypairInterface {
@@ -75,6 +76,9 @@ public struct FlowSecp256k1Keypair: FlowKeypairInterface {
     
     public func signAlgorithm() -> FlowSigningAlgorithm {
         return .ECDSASecp256k1
+    }
+    public static func isValidPrivateKey(privateData: Data) -> Bool {
+        return  SECP256K1.verifyPrivateKey(privateKey: privateData)
     }
 }
 
@@ -116,5 +120,11 @@ public struct FlowECDSAP256Keypair: FlowKeypairInterface {
     
     public func signAlgorithm() -> FlowSigningAlgorithm {
         return .ECDSAP256
+    }
+    public static func isValidPrivateKey(privateData: Data) -> Bool{
+        guard let _ = try? FlowECDSAP256Keypair(privateData: privateData) else {
+            return false
+        }
+        return true
     }
 }

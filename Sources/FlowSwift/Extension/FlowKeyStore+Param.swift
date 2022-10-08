@@ -36,10 +36,12 @@ extension FlowKeyStore{
         public var id: String?
         public var version: Int
         public var isHDWallet: Bool?
-        public init(crypto cr: CryptoParamsV3, id i: String, version ver: Int) {
+        public var type: String?
+        public init(crypto cr: CryptoParamsV3, id i: String, version ver: Int, type: String? = "private-key") {
             self.crypto = cr
             self.id = i
             self.version = ver
+            self.type = type
         }
     }
 }

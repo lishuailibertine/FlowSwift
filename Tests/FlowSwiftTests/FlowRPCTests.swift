@@ -31,6 +31,20 @@ class FlowRPCTests: XCTestCase {
         }
         waitForExpectations(timeout: 10)
     }
+    
+    func test_getBlock() throws {
+        
+        let expectation = expectation(description: "testGRPC")
+        rpc.queryBlock().done { block in
+            
+            expectation.fulfill()
+        }.catch { error in
+            debugPrint(error)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+    }
+    
     //测试时把主网的合约地址修改为测试网
     func test_sendTransaction() throws {
         let expectation = expectation(description: "test_sendTransaction")

@@ -8,14 +8,13 @@
 import Foundation
 import CryptoSwift
 
-public enum FlowSigningAlgorithm: Int {
+public enum FlowSigningAlgorithm: Int, Codable {
     case UnknownSigningAlgorithm = 0
-    case BLSBLS12381 = 1
     case ECDSAP256 = 2
     case ECDSASecp256k1 = 3
 }
 
-public enum FlowHashingAlgorithm: Int {
+public enum FlowHashingAlgorithm: Int, Codable {
     
     case UnknownHashingAlgorithm = 0
     case SHA2_256 = 1

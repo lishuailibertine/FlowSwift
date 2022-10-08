@@ -14,25 +14,22 @@ import PromiseKit
 
 public struct FlowGRPCRequest{
     public var host: String
-    public var port: Int
+    public var port: Int?
     public static let shared = FlowGRPCRequest()
-    public init(host: String = "access.devnet.nodes.onflow.org", port: Int = 9000){
+    public init(host: String = "access.devnet.nodes.onflow.org", port: Int? = 9000){
         self.host = host
         self.port = port
     }
-    public mutating func configRequest(urlStr: String) throws {
-        guard let url = URL(string: urlStr) else {
-            throw FlowApiError.configRequestError
+    public init(url: String) throws{
+        guard url.isGRPC() else {
+            throw FlowApiError.invalidUrl
         }
-        guard let _host = url.host, let _port = url.port else {
-            throw FlowApiError.configRequestError
-        }
-        self.host = _host
-        self.port = _port
+        let host = String(url.split(separator: ":")[0])
+        let port = String(url.split(separator: ":")[1])
+        self.init(host: host, port: Int(port))
     }
-    
     public func channel(group: EventLoopGroup) -> GRPCChannel {
-        let channel = ClientConnection.insecure(group: group).connect(host: host, port: port)
+        let channel = ClientConnection.insecure(group: group).connect(host: host, port: port!)
         return channel
     }
     
@@ -53,7 +50,7 @@ public struct FlowGRPCRequest{
         }
     }
     
-    public func queryLatestBlock(sealed: Bool) -> Promise<Flow_Access_BlockResponse>  {
+    public func queryLatestBlock(sealed: Bool = true) -> Promise<Flow_Access_BlockResponse>  {
         return Promise { seal in
             let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 5)
             defer {

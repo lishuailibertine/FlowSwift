@@ -35,7 +35,7 @@ public enum RLP {
     }
 
     static func encodeString(_ string: String) -> Data? {
-        if let hexData = Data.fromHex(string) {
+        if let hexData = Data.fromString(string) {
             return encodeData(hexData)
         }
 
@@ -130,4 +130,3 @@ public enum RLP {
         return Data(bytes.reversed())
     }
 }
-

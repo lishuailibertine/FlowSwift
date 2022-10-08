@@ -20,18 +20,18 @@ final public class FlowEntitiesTransactionBuilder{
     internal var transaction: Flow_Entities_Transaction = Flow_Entities_Transaction()
     internal var payloadSignatures = [FlowEntitiesTransactionSignature]()
     internal var envelopeSignatures = [FlowEntitiesTransactionSignature]()
-
+    public init(){}
     internal var signerMap: [Int: FlowAddressData]{
         var signers = [FlowAddressData]()
-        //ProposalKey
+        // ProposalKey
         if transaction.proposalKey.address.count > 0 {
             signers.append(transaction.proposalKey.address)
         }
-        //Payer
+        // Payer
         if transaction.payer.count > 0 {
             signers.append(transaction.payer)
         }
-        //authorizer
+        // authorizer
         transaction.authorizers.forEach{signers.append($0)}
         
         var signerMap = [Int: FlowAddressData]()

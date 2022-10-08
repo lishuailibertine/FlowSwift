@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by li shuai on 2022/9/16.
 //
@@ -40,10 +40,10 @@ public final class FlowKeyStore{
     }
     
     public init?(_ keystoreParams: KeystoreParamsV3) {
-        if (keystoreParams.version != 3) {
+        if keystoreParams.version != 3 {
             return nil
         }
-        if (keystoreParams.crypto.version != nil && keystoreParams.crypto.version != "1") {
+        if keystoreParams.crypto.version != nil && keystoreParams.crypto.version != "1" {
             return nil
         }
         self.keystoreParams = keystoreParams
@@ -57,10 +57,10 @@ public final class FlowKeyStore{
     }
     
     fileprivate func encryptDataToStorage(_ password: String, keyData: Data?, dkLen: Int = 32, N: Int = 4096, R: Int = 8, P: Int = 6, aesMode: String = "aes-128-cbc") throws {
-        if (keyData == nil) {
+        if keyData == nil {
             throw FlowKeystoreError.encryptionError("Encryption without key data")
         }
-        let saltLen = 32;
+        let saltLen = 32
         guard let saltData = Data.randomBytes(length: saltLen) else {
             throw FlowKeystoreError.noEntropyError
         }
@@ -103,9 +103,7 @@ public final class FlowKeyStore{
         guard let keystoreParams = self.keystoreParams else {
             return nil
         }
-        guard let saltData = Data.fromHex(keystoreParams.crypto.kdfparams.salt) else {
-            return nil
-        }
+        let saltData = Data(hex: keystoreParams.crypto.kdfparams.salt)
         let derivedLen = keystoreParams.crypto.kdfparams.dklen
         var passwordDerivedKey: Data?
         switch keystoreParams.crypto.kdf {
@@ -124,14 +122,14 @@ public final class FlowKeyStore{
             guard let algo = keystoreParams.crypto.kdfparams.prf else {
                 return nil
             }
-            var hashVariant: HMAC.Variant?;
+            var hashVariant: HMAC.Variant?
             switch algo {
             case "hmac-sha256":
                 hashVariant = HMAC.Variant.sha2(.sha256)
             case "hmac-sha384":
-                hashVariant = HMAC.Variant.sha2(.sha384)
+                hashVariant = HMAC.Variant.sha2(.sha256)
             case "hmac-sha512":
-                hashVariant = HMAC.Variant.sha2(.sha512)
+                hashVariant = HMAC.Variant.sha2(.sha256)
             default:
                 hashVariant = nil
             }
@@ -157,22 +155,19 @@ public final class FlowKeyStore{
         var dataForMAC = Data()
         let derivedKeyLast16bytes = Data(derivedKey[(derivedKey.count - 16)...(derivedKey.count - 1)])
         dataForMAC.append(derivedKeyLast16bytes)
-        guard let cipherText = Data.fromHex(keystoreParams.crypto.ciphertext) else {
-            return nil
-        }
-        if (cipherText.count != 32) {
+        let cipherText = Data(hex: keystoreParams.crypto.ciphertext)
+        if cipherText.count != 32 {
             return nil
         }
         dataForMAC.append(cipherText)
         let mac = dataForMAC.sha3(.keccak256)
-        guard let calculatedMac = Data.fromHex(keystoreParams.crypto.mac), mac.constantTimeComparisonTo(calculatedMac) else {
+        let calculatedMac = Data(hex: keystoreParams.crypto.mac)
+        guard mac.constantTimeComparisonTo(calculatedMac) else {
             return nil
         }
         let cipher = keystoreParams.crypto.cipher
         let decryptionKey = derivedKey[0...15]
-        guard let IV = Data.fromHex(keystoreParams.crypto.cipherparams.iv) else {
-            return nil
-        }
+        let IV = Data(hex: keystoreParams.crypto.cipherparams.iv)
         var decryptedPK: Array<UInt8>?
         switch cipher {
         case "aes-128-ctr":

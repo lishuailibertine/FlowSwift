@@ -15,7 +15,7 @@ import SwiftProtobuf
 // incompatible with the version of SwiftProtobuf to which you are linking.
 // Please ensure that you are building against the same version of the API
 // that was used to generate this file.
-fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAPIVersionCheck {
+private struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAPIVersionCheck {
   struct _2: SwiftProtobuf.ProtobufAPIVersion_2 {}
   typealias Version = _2
 }
@@ -94,7 +94,7 @@ public struct Flow_Access_BlockHeaderResponse {
 
   public init() {}
 
-  fileprivate var _block: Flow_Entities_BlockHeader? = nil
+  private var _block: Flow_Entities_BlockHeader? = nil
 }
 
 public struct Flow_Access_GetLatestBlockRequest {
@@ -151,7 +151,7 @@ public struct Flow_Access_BlockResponse {
 
   public init() {}
 
-  fileprivate var _block: Flow_Entities_Block? = nil
+  private var _block: Flow_Entities_Block? = nil
 }
 
 public struct Flow_Access_GetCollectionByIDRequest {
@@ -184,7 +184,7 @@ public struct Flow_Access_CollectionResponse {
 
   public init() {}
 
-  fileprivate var _collection: Flow_Entities_Collection? = nil
+  private var _collection: Flow_Entities_Collection? = nil
 }
 
 public struct Flow_Access_SendTransactionRequest {
@@ -205,7 +205,7 @@ public struct Flow_Access_SendTransactionRequest {
 
   public init() {}
 
-  fileprivate var _transaction: Flow_Entities_Transaction? = nil
+  private var _transaction: Flow_Entities_Transaction? = nil
 }
 
 public struct Flow_Access_SendTransactionResponse {
@@ -250,7 +250,7 @@ public struct Flow_Access_TransactionResponse {
 
   public init() {}
 
-  fileprivate var _transaction: Flow_Entities_Transaction? = nil
+  private var _transaction: Flow_Entities_Transaction? = nil
 }
 
 public struct Flow_Access_TransactionResultResponse {
@@ -303,7 +303,7 @@ public struct Flow_Access_GetAccountResponse {
 
   public init() {}
 
-  fileprivate var _account: Flow_Entities_Account? = nil
+  private var _account: Flow_Entities_Account? = nil
 }
 
 public struct Flow_Access_GetAccountAtLatestBlockRequest {
@@ -336,7 +336,7 @@ public struct Flow_Access_AccountResponse {
 
   public init() {}
 
-  fileprivate var _account: Flow_Entities_Account? = nil
+  private var _account: Flow_Entities_Account? = nil
 }
 
 public struct Flow_Access_GetAccountAtBlockHeightRequest {
@@ -474,7 +474,7 @@ public struct Flow_Access_EventsResponse {
 
     public init() {}
 
-    fileprivate var _blockTimestamp: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
+    private var _blockTimestamp: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
   }
 
   public init() {}
@@ -563,7 +563,7 @@ extension Flow_Access_ProtocolStateSnapshotResponse: @unchecked Sendable {}
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
-fileprivate let _protobuf_package = "flow.access"
+private let _protobuf_package = "flow.access"
 
 extension Flow_Access_PingRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".PingRequest"
