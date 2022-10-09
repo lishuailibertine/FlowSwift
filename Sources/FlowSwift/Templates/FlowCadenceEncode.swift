@@ -78,8 +78,8 @@ public struct JsonCadenceObject: Encodable{
         case word16(BigInt)
         case word32(BigInt)
         case word64(BigInt)
-        case fix64(Double)
-        case uFix64(Double)
+        case fix64(Decimal)
+        case uFix64(Decimal)
         case array([JsonCadenceObject])
         case dictionary([JsonDictionaryItem])
         case `struct`(JsonCompositeValue)
@@ -149,9 +149,9 @@ extension JsonCadenceObject.JsonValueObject: Encodable{
         case .word64(let value):
             try container.encode(value.description)
         case .fix64(let value):
-            try container.encode(String(value))
+            try container.encode(value.description)
         case .uFix64(let value):
-            try container.encode(String(value))
+            try container.encode(value.description)
         case .array(let array):
             try container.encode(array)
         case .dictionary(let dic):

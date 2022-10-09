@@ -35,7 +35,7 @@ class FlowRPCTests: XCTestCase {
     func test_getBlock() throws {
         
         let expectation = expectation(description: "testGRPC")
-        rpc.queryBlock().done { block in
+        rpc.queryLatestBlock().done { block in
             
             expectation.fulfill()
         }.catch { error in
@@ -51,7 +51,7 @@ class FlowRPCTests: XCTestCase {
         let key = try FlowECDSAP256Keypair(privateData: Data(hex: "af39ff9ad1db0c6df7c2e359f80ac95d71a82a4c03d3f169e98a81db00f9b717"))
         let fromAddress = FlowAddress(address: "0xa2dcfc6200593335", chainCodeWord: .codeword_testnet)!
         let toAddress = FlowAddress(address: "0x025aa094fc7cca30", chainCodeWord: .codeword_testnet)!
-        let amount = "1"
+        let amount = "0.0001"
         firstly {
             when(fulfilled: rpc.queryAccount(address: fromAddress.address),
                  rpc.queryLatestBlock(sealed: true))
