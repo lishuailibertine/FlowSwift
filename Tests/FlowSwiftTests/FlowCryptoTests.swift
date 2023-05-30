@@ -26,4 +26,13 @@ class FlowCryptoTests: XCTestCase {
         
         XCTAssert(FlowAddress.checkIntoAddress(chainCodeWord: .codeword_testnet, address: "0xa2dcfc6200593335"))
     }
+    
+    func test_keystore() throws{
+        
+        let startTime = CFAbsoluteTimeGetCurrent()
+        let keyStore = try FlowKeyStore(privateKey: Data(hex: "bfdc4a7b5afa984dd75e18e4562a5933edd8b1d2858d3c098caa39125ac4d7a2"), password: "Ll123456")
+        let endTime = CFAbsoluteTimeGetCurrent()
+        debugPrint("代码执行时长：%f 毫秒", (endTime - startTime)*1000)
+    }
+    
 }
