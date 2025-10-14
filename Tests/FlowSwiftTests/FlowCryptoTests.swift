@@ -6,8 +6,6 @@
 //
 
 import XCTest
-import CryptoSwift
-
 @testable import FlowSwift
 
 class FlowCryptoTests: XCTestCase {

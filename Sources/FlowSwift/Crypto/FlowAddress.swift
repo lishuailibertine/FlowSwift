@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CryptoSwift
 
 //https://github.com/onflow/rosetta/blob/905dd965002b4fbe35d26031ba28f2f3fbedc30c/cmd/genaddress/genaddress.go
 
