@@ -18,8 +18,6 @@ let package = Package(
             targets: ["SECP256r1"])
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.26.0"),
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift", from: "1.9.0"),
         .package(url: "https://github.com/mathwallet/Secp256k1Swift.git", from: "2.0.1"),
@@ -35,8 +33,17 @@ let package = Package(
             dependencies: []),
         .target(
             name: "FlowSwift",
-            dependencies: [.product(name: "SwiftProtobuf", package: "swift-protobuf"), .product(name: "GRPC", package: "grpc-swift"), "Secp256k1Swift", "SECP256r1", "BigInt", "PromiseKit", "CryptoSwift"],
-            resources: [.process("Templates/Contracts")]),
+            dependencies: [
+                .product(name: "SwiftProtobuf", package: "swift-protobuf"),
+                .product(name: "GRPC", package: "grpc-swift"),
+                "Secp256k1Swift",
+                "CryptoSwift",
+                "SECP256r1",
+                "BigInt",
+                "PromiseKit"
+            ],
+            resources: [.process("Templates/Contracts")]
+        ),
         .testTarget(
             name: "FlowSwiftTests",
             dependencies: ["FlowSwift"]),

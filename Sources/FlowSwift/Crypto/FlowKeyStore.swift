@@ -75,16 +75,16 @@ public final class FlowKeyStore{
         var aesCipher: AES?
         switch aesMode {
         case "aes-128-cbc":
-            aesCipher = try? AES(key: encryptionKey.bytes, blockMode: CBC(iv: IV.bytes), padding: .noPadding)
+            aesCipher = try? AES(key: encryptionKey.byteArray, blockMode: CBC(iv: IV.byteArray), padding: .noPadding)
         case "aes-128-ctr":
-            aesCipher = try? AES(key: encryptionKey.bytes, blockMode: CTR(iv: IV.bytes), padding: .noPadding)
+            aesCipher = try? AES(key: encryptionKey.byteArray, blockMode: CTR(iv: IV.byteArray), padding: .noPadding)
         default:
             aesCipher = nil
         }
         if aesCipher == nil {
             throw FlowKeystoreError.aesError
         }
-        guard let encryptedKey = try aesCipher?.encrypt(keyData!.bytes) else {
+        guard let encryptedKey = try aesCipher?.encrypt(keyData!.byteArray) else {
             throw FlowKeystoreError.aesError
         }
         let encryptedKeyData = Data(encryptedKey)
@@ -142,7 +142,7 @@ public final class FlowKeyStore{
             guard let passData = password.data(using: .utf8) else {
                 return nil
             }
-            guard let derivedArray = try? PKCS5.PBKDF2(password: passData.bytes, salt: saltData.bytes, iterations: c, keyLength: derivedLen, variant: hashVariant!).calculate() else {
+            guard let derivedArray = try? PKCS5.PBKDF2(password: passData.byteArray, salt: saltData.byteArray, iterations: c, keyLength: derivedLen, variant: hashVariant!).calculate() else {
                 return nil
             }
             passwordDerivedKey = Data(derivedArray)
@@ -171,15 +171,15 @@ public final class FlowKeyStore{
         var decryptedPK: Array<UInt8>?
         switch cipher {
         case "aes-128-ctr":
-            guard let aesCipher = try? AES(key: decryptionKey.bytes, blockMode: CTR(iv: IV.bytes), padding: .noPadding) else {
+            guard let aesCipher = try? AES(key: decryptionKey.byteArray, blockMode: CTR(iv: IV.byteArray), padding: .noPadding) else {
                 return nil
             }
-            decryptedPK = try aesCipher.decrypt(cipherText.bytes)
+            decryptedPK = try aesCipher.decrypt(cipherText.byteArray)
         case "aes-128-cbc":
-            guard let aesCipher = try? AES(key: decryptionKey.bytes, blockMode: CBC(iv: IV.bytes), padding: .noPadding) else {
+            guard let aesCipher = try? AES(key: decryptionKey.byteArray, blockMode: CBC(iv: IV.byteArray), padding: .noPadding) else {
                 return nil
             }
-            decryptedPK = try? aesCipher.decrypt(cipherText.bytes)
+            decryptedPK = try? aesCipher.decrypt(cipherText.byteArray)
         default:
             return nil
         }
@@ -198,7 +198,7 @@ public final class FlowKeyStore{
     }
     private func scrypt (password: String, salt: Data, length: Int, N: Int, R: Int, P: Int) -> Data? {
         guard let passwordData = password.data(using: .utf8) else {return nil}
-        guard let deriver = try? Scrypt(password: passwordData.bytes, salt: salt.bytes, dkLen: length, N: N, r: R, p: P) else {return nil}
+        guard let deriver = try? Scrypt(password: passwordData.byteArray, salt: salt.byteArray, dkLen: length, N: N, r: R, p: P) else {return nil}
         guard let result = try? deriver.calculate() else {return nil}
         return Data(result)
     }
