@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CryptoSwift
 
 extension Data {
     /// Convert data to list of byte
@@ -16,7 +17,7 @@ extension Data {
     /// Initial the data with  string
     internal static func fromString(_ str: String) -> Data? {
         let string = str.lowercased().stripHexPrefix()
-        guard let array = string.data(using: .utf8)?.bytes else {
+        guard let array = string.data(using: .utf8)?.byteArray else {
             return nil
         }
         if array.isEmpty {

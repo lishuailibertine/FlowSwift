@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  FlowAddress.swift
+//
 //
 //  Created by li shuai on 2022/8/24.
 //
@@ -69,7 +69,7 @@ public struct FlowAddress: Codable {
         let _address = address.hasPrefix("0x") ? address[2...] : address
         let addressData = Data(hex: _address)
         if addressData.count == AddressLength {
-            let address_int64: UInt64 = getUInt64(bytes: addressData.bytes, startIndex: 0)
+            let address_int64: UInt64 = getUInt64(bytes: addressData.byteArray, startIndex: 0)
             return validateChainAddress(chainCodeWord: chainCodeWord, address: address_int64)
         }
         return false
